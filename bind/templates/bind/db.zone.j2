@@ -1,0 +1,15 @@
+$TTL    604800
+@       IN      SOA     {{ domain.get_full_domain }}. admin.{{ domain.get_full_domain }}. (
+                              {{ serial }}         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      {{ domain.get_full_domain }}.
+;
+{% for record in records %}
+{% if record.record_type == 'A' %}
+{{ domain.get_full_domain }}.    IN    A    {{ record.ip_address }}
+{% endif %}
+{% endfor %}

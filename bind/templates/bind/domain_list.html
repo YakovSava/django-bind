@@ -1,0 +1,61 @@
+{% extends 'bind/base.html' %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <h2 class="text-2xl font-bold mb-4">Add New Domain</h2>
+    <form method="post" action="{% url 'domain-create' %}" class="mb-4">
+        {% csrf_token %}
+        <div class="flex gap-4">
+            <div class="flex-1">
+                {{ domain_form.name }}
+            </div>
+            <div class="w-32">
+                {{ domain_form.tld }}
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Add Domain
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+    <h2 class="text-2xl font-bold mb-4">Domains</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Domain
+                    </th>
+                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Records
+                    </th>
+                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                {% for domain in domains %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        {{ domain.get_full_domain }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        {% for record in domain.records.all %}
+                        <div class="mb-1">{{ record.record_type }} - {{ record.ip_address }}</div>
+                        {% endfor %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <a href="{% url 'record-create' %}?domain={{ domain.id }}" class="text-blue-600 hover:text-blue-900 mr-3">Add Record</a>
+                        <a href="{% url 'view-config' domain.id %}" class="text-green-600 hover:text-green-900 mr-3">View Config</a>
+                        <a href="{% url 'domain-delete' domain.id %}" class="text-red-600 hover:text-red-900">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

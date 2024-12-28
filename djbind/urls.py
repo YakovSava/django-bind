@@ -14,9 +14,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# django_bind/urls.py
 from django.contrib import admin
 from django.urls import path
+from bind.views import (
+    DomainListView,
+    DomainCreateView,
+    DomainRecordCreateView,
+    DomainDeleteView,
+    view_config
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', DomainListView.as_view(), name='domain-list'),
+    path('domain/add/', DomainCreateView.as_view(), name='domain-create'),
+    path('record/add/', DomainRecordCreateView.as_view(), name='record-create'),
+    path('domain/<int:domain_id>/config/', view_config, name='view-config'),
+    path('domain/<int:pk>/delete/', DomainDeleteView.as_view(), name='domain-delete'),
 ]

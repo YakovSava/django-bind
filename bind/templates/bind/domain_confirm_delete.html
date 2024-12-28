@@ -1,0 +1,22 @@
+# bind/templates/bind/domain_confirm_delete.html
+{% extends 'bind/base.html' %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <h2 class="text-2xl font-bold mb-4">Delete Domain</h2>
+
+    <p class="mb-4">Are you sure you want to delete domain "{{ object.get_full_domain }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex gap-4">
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Confirm Delete
+            </button>
+            <a href="{% url 'domain-list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

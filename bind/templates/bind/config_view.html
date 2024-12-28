@@ -1,0 +1,44 @@
+{% extends 'bind/base.html' %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <h2 class="text-2xl font-bold mb-4">Configuration for {{ domain.get_full_domain }}</h2>
+
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">named.conf.local</h3>
+        <pre class="bg-gray-100 p-4 rounded">
+zone "{{ domain.get_full_domain }}" {
+        type master;
+        file "/etc/bind/zones/db.{{ domain.get_full_domain }}";
+};
+        </pre>
+    </div>
+
+    <div>
+        <h3 class="text-lg font-semibold mb-2">Zone File (db.{{ domain.get_full_domain }})</h3>
+        <pre class="bg-gray-100 p-4 rounded">
+$TTL    604800
+@       IN      SOA     {{ domain.get_full_domain }}. admin.{{ domain.get_full_domain }}. (
+                              5         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      {{ domain.get_full_domain }}.
+;
+{% for record in records %}
+{% if record.record_type == 'A' %}
+{{ domain.get_full_domain }}.    IN    A    {{ record.ip_address }}
+{% endif %}
+{% endfor %}
+        </pre>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'domain-list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        Back to Domains
+    </a>
+</div>
+{% endblock %}

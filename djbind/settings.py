@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7yj1nsrl9=r4g-4(iogoc%ex36-%7tvmheb7-jo+uzic))c1ct
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bind.apps.BindConfig'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+BIND9_ENABLED = False  # Set False for testing
+BIND9_ZONES_DIR = '/etc/bind/zones'  # Директория для zone-файлов
+BIND9_NAMED_CONF_DIR = '/etc/bind'   # Директория для named.conf.local
+BIND9_RELOAD_COMMAND = 'sudo systemctl restart bind9'  # Команда для перезагрузки bind

@@ -1,0 +1,4 @@
+zone "{{ domain.get_full_domain }}" {
+        type master;
+        file "/etc/bind/zones/db.{{ domain.get_full_domain }}";
+};
